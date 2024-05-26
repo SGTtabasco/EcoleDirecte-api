@@ -2,7 +2,7 @@
   "name": "ecoledirecte-api",
   "version": "1.0.0",
   "description": "A library to interact with the EcoleDirecte API",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc"
   },
