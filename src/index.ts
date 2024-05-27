@@ -58,7 +58,7 @@ interface LoginParamsResponse {
             profile: {
                 nomEtablissement: string
                 idEtablissement: string
-                photo: string
+                photo: string // in base 64
                 email?: string
                 telPortable: string
                 isChefEtab?: boolean
@@ -123,8 +123,6 @@ export default class User {
     DoubleAuthResponse: string[] | null = null
     DoubleAuthCode: {cn: string, cv: string} | null = null
 
-
-
     constructor(username: string, password: string, version: string = "4.57.1") {
         this.username = username;
         this.password = password
@@ -133,8 +131,10 @@ export default class User {
 
     async login (): Promise<LoginParamsResponseError> {
         if (this.inDoubleAuth && !this.DoubleAuthCode) {
-            throw SyntaxError("login called with Double auth pending")
+            throw SyntaxError("login called with Double auth pending") // this.validate_double_auth should be called
         }
+
+        // login to ecole directe with the given credentials and DoubleAuthCode if needed
         const r = (await axios.post(`https://api.ecoledirecte.com/v3/login.awp?v=${this.versionAPI}`,
             `data=${JSON.stringify({
                 identifiant: this.username,
